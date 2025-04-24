@@ -14,16 +14,11 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Select Xcode 16
-        run: sudo xcode-select -s /Applications/Xcode_16.1.app
-
-      #- name: Install dependencies
-      #  run: |
-      #    brew install cocoapods # if needed
-      #    pod install # or other setup scripts
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
       - name: Build and test
         run: |
           xcodebuild test \
             -scheme PlanningPoker \
-            -destination 'platform=iOS Simulator,name=Any' \
+            -destination 'platform=iOS Simulator,name=Any iOS Simulator Device' \
             -enableCodeCoverage YES

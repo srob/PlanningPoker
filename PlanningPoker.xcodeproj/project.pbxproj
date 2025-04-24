@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77BB24552DBAE3BA00BE2BF8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 77BB24542DBAE3BA00BE2BF8 /* FirebaseAuth */; };
+		77BB24572DBAE3BA00BE2BF8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 77BB24562DBAE3BA00BE2BF8 /* FirebaseFirestore */; };
 		77DCA1562DB6DDA700822D66 /* analog_bell_ding_reverb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 77DCA1552DB6DDA700822D66 /* analog_bell_ding_reverb.mp3 */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77BB24552DBAE3BA00BE2BF8 /* FirebaseAuth in Frameworks */,
+				77BB24572DBAE3BA00BE2BF8 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +135,8 @@
 			);
 			name = PlanningPoker;
 			packageProductDependencies = (
+				77BB24542DBAE3BA00BE2BF8 /* FirebaseAuth */,
+				77BB24562DBAE3BA00BE2BF8 /* FirebaseFirestore */,
 			);
 			productName = PlanningPoker;
 			productReference = 77DCA12B2DB6C52100822D66 /* PlanningPoker.app */;
@@ -214,6 +220,9 @@
 			);
 			mainGroup = 77DCA1222DB6C52100822D66;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				77BB24532DBAE3BA00BE2BF8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 77DCA12C2DB6C52100822D66 /* Products */;
 			projectDirPath = "";
@@ -584,6 +593,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		77BB24532DBAE3BA00BE2BF8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		77BB24542DBAE3BA00BE2BF8 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77BB24532DBAE3BA00BE2BF8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		77BB24562DBAE3BA00BE2BF8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77BB24532DBAE3BA00BE2BF8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 77DCA1232DB6C52100822D66 /* Project object */;
 }

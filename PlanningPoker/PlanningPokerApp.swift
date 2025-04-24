@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct PlanningPokerApp: App {
     @State private var showSplash = true
+    
+    init() {
+        FirebaseApp.configure();
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -24,7 +29,6 @@ struct PlanningPokerApp: App {
                     }
             } else {
                 ContentView()
-                // PlanningPokerGridView()
             }
         }
     }

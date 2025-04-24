@@ -9,9 +9,24 @@ import SwiftUI
 
 @main
 struct PlanningPokerApp: App {
+    @State private var showSplash = true
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if showSplash {
+                LaunchScreen()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation {
+                                showSplash = false
+                            }
+                        }
+                    }
+            } else {
+                ContentView()
+                // PlanningPokerGridView()
+            }
         }
     }
 }
+

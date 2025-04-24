@@ -10,8 +10,20 @@ import Testing
 
 struct PlanningPokerTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test
+    func testVerticalStringTransformation() {
+        #expect("13".vertical == "1\n3")
+        #expect("?".vertical == "?")
+        #expect("100".vertical == "1\n0\n0")
     }
 
+    @Test
+    func testAssociatedColorMapping() {
+        #expect("?".associatedColor == .purple)
+        #expect("1".associatedColor == .blue)
+        #expect("5".associatedColor == .green)
+        #expect("13".associatedColor == .orange)
+        #expect("100".associatedColor == .red)
+        #expect("banana".associatedColor == .white) // fallback
+    }
 }

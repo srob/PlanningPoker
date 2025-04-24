@@ -7,19 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
-    runs-on: macos-latest
+  build:
+    runs-on: macos-14
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Xcode
-      run: sudo xcode-select -s /Applications/Xcode_16.3.app	
+      - name: Select Xcode 16
+        run: sudo xcode-select -s /Applications/Xcode_16.app
 
-    - name: Build and run tests
-      run: |
-        xcodebuild test \
-          -scheme PlanningPoker \
-          -destination 'platform=iOS Simulator,name=iPhone 15' \
-          -enableCodeCoverage YES
+      #- name: Install dependencies
+      #  run: |
+      #    brew install cocoapods # if needed
+      #    pod install # or other setup scripts
 
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -workspace PlanningPoker.xcworkspace \
+            -scheme PlanningPoker \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -enableCodeCoverage YES

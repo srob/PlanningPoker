@@ -20,5 +20,5 @@ jobs:
         run: |
           xcodebuild test \
             -scheme PlanningPoker \
-            -destination 'platform=iOS Simulator,id=C85B8714-48FA-406F-8B74-FCBC40D687E9,OS=18.4,name=iPhone 16'
+            -destination 'platform=iOS Simulator,id=C85B8714-48FA-406F-8B74-FCBC40D687E9,OS=18.4,name=iPhone 16' \
             -enableCodeCoverage YES

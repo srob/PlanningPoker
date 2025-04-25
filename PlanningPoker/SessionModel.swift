@@ -19,6 +19,7 @@ class SessionModel: ObservableObject {
     @Published var selectedValue: String? = nil
     @Published var votes: [String: String] = [:] // userId -> value
     @Published var isRevealed: Bool = false
+    @Published var participants: [String] = []
 
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
@@ -30,9 +31,10 @@ class SessionModel: ObservableObject {
         let data: [String: Any] = [
             "createdBy": userId,
             "revealed": false,
-            "votes": [:]
+            "votes": [:],
+            "participants": [userId: true]
         ]
-
+        
         sessionRef.setData(data) { error in
             if let error = error {
                 completion(.failure(error))
@@ -45,6 +47,9 @@ class SessionModel: ObservableObject {
 
     func joinSession(sessionId: String) {
         self.sessionId = sessionId
+        db.collection("sessions")
+          .document(sessionId)
+          .setData(["participants.\(userId)": true], merge: true)
         listenToSession()
     }
 
@@ -63,6 +68,11 @@ class SessionModel: ObservableObject {
             .updateData(["revealed": true])
     }
 
+    var allParticipantIds: [String] {
+        return participants.isEmpty ? Array(Set(votes.keys + [userId])) : participants
+    }
+
+    
     private func listenToSession() {
         guard !sessionId.isEmpty else { return }
         listener?.remove()
@@ -71,10 +81,15 @@ class SessionModel: ObservableObject {
             .document(sessionId)
             .addSnapshotListener { snapshot, error in
                 guard let data = snapshot?.data(), error == nil else { return }
+                
+                if let rawParticipants = data["participants"] as? [String: Bool] {
+                    self.participants = Array(rawParticipants.keys)
+                }
 
                 self.votes = data["votes"] as? [String: String] ?? [:]
                 self.isRevealed = data["revealed"] as? Bool ?? false
             }
+        
     }
 
     deinit {

@@ -28,7 +28,7 @@ struct PlanningPokerApp: App {
                         }
                     }
             } else {
-                ContentView()
+                ModeSelectionView()
             }
         }
     }

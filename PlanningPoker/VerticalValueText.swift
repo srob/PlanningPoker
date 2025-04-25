@@ -20,5 +20,6 @@ struct VerticalValueText: View {
             .scaleEffect(animate ? 1.0 : 0.5)
             .opacity(animate ? 1 : 0)
             .animation(.easeOut(duration: 0.6), value: animate)
+            .accessibilityIdentifier("FullScreenValueText")
     }
 }

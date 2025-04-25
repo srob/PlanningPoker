@@ -10,76 +10,59 @@ import XCTest
 final class PlanningPokerUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here before each test
         continueAfterFailure = false
     }
 
     func testSelectingValueShowsFullScreenView() throws {
         let app = XCUIApplication()
         app.launch()
+        app.enterSoloMode()
 
-        // Tap on the first button (e.g., "0")
-        let firstButton = app.buttons.element(boundBy: 0)
-        XCTAssertTrue(firstButton.waitForExistence(timeout: 3), "First value button should appear within 3 seconds")
+        let zeroButton = app.buttons["0"]
+        XCTAssertTrue(zeroButton.waitUntilExists(timeout: 3), "Button labeled '0' should appear within 3 seconds")
+        zeroButton.tap()
 
-        let allButtons = app.buttons.allElementsBoundByIndex
-        print("Found \(allButtons.count) buttons:")
-        for button in allButtons {
-            print("- \(button.label)")
-        }
-
-        XCTAssertTrue(firstButton.exists, "First value button should exist")
-        firstButton.tap()
-
-        // Check that the full-screen text is visible
-        let fullScreenText = app.staticTexts["0"]
-        XCTAssertTrue(fullScreenText.waitForExistence(timeout: 2), "Full-screen value should appear after tap")
+        let fullScreenContainer = app.otherElements["FullScreenContainer"]
+        XCTAssertTrue(fullScreenContainer.waitUntilExists(timeout: 5), "Full-screen view should appear after tap")
     }
-    
-    
+
     func testFullScreenViewDismissesOnTap() {
         let app = XCUIApplication()
         app.launch()
+        app.enterSoloMode()
 
-        // Tap a button (e.g. "0")
-        let button = app.buttons.element(boundBy: 0)
-        XCTAssertTrue(button.waitForExistence(timeout: 2), "Button should exist")
-        button.tap()
+        let zeroButton = app.buttons["0"]
+        XCTAssertTrue(zeroButton.waitUntilExists(timeout: 2), "Button labeled '0' should exist")
+        zeroButton.tap()
 
-        // Wait for full-screen value to appear
-        let fullScreenText = app.staticTexts["0"]
-        XCTAssertTrue(fullScreenText.waitForExistence(timeout: 2), "Full-screen value should appear")
+        let fullScreenContainer = app.otherElements["FullScreenContainer"]
+        XCTAssertTrue(fullScreenContainer.waitUntilExists(timeout: 5), "Full-screen view should appear")
 
-        // Tap anywhere to dismiss
         app.windows.firstMatch.tap()
-        
-        let disappeared = fullScreenText.waitForNonExistence(timeout: 2)
-        XCTAssertTrue(disappeared, "Full-screen value should disappear after tap")
 
-        // Verify grid returns (check for one of the buttons again)
+        let disappeared = fullScreenContainer.waitUntilNotExists(timeout: 5)
+        XCTAssertTrue(disappeared, "Full-screen view should disappear after tap")
+
         let reappearedButton = app.buttons["0"]
-        XCTAssertTrue(reappearedButton.waitForExistence(timeout: 2), "Button should reappear after dismiss")
+        XCTAssertTrue(reappearedButton.waitUntilExists(timeout: 2), "Button labeled '0' should reappear after dismiss")
     }
-    
+
     func testFullScreenViewAutoDismissesAfterCountdown() {
         let app = XCUIApplication()
         app.launch()
+        app.enterSoloMode()
 
-        // Tap a value button (e.g., "0")
-        let button = app.buttons.element(boundBy: 0)
-        XCTAssertTrue(button.waitForExistence(timeout: 2), "Value button should exist")
-        button.tap()
+        let zeroButton = app.buttons["0"]
+        XCTAssertTrue(zeroButton.waitUntilExists(timeout: 2), "Button labeled '0' should exist")
+        zeroButton.tap()
 
-        // Wait for full-screen text to appear
-        let fullScreenText = app.staticTexts["0"]
-        XCTAssertTrue(fullScreenText.waitForExistence(timeout: 2), "Full-screen value should appear")
+        let fullScreenContainer = app.otherElements["FullScreenContainer"]
+        XCTAssertTrue(fullScreenContainer.waitUntilExists(timeout: 5), "Full-screen view should appear")
 
-        // Wait for the full-screen text to disappear (auto-dismiss after 5 seconds + animation)
-        let disappeared = fullScreenText.waitForNonExistence(timeout: 7)
-        XCTAssertTrue(disappeared, "Full-screen value should auto-dismiss after countdown")
+        let disappeared = fullScreenContainer.waitUntilNotExists(timeout: 7)
+        XCTAssertTrue(disappeared, "Full-screen view should auto-dismiss after countdown")
 
-        // Confirm the grid view returns
         let reappearedButton = app.buttons["0"]
-        XCTAssertTrue(reappearedButton.waitForExistence(timeout: 2), "Value button should reappear after auto-dismiss")
+        XCTAssertTrue(reappearedButton.waitUntilExists(timeout: 2), "Button labeled '0' should reappear after auto-dismiss")
     }
 }

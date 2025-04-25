@@ -22,9 +22,11 @@ struct ModeSelectionView: View {
 
                 NavigationLink("👤 Solo Mode", destination: ContentView())
                     .buttonStyle(.borderedProminent)
+                    .accessibilityIdentifier("SoloModeButton")
 
                 NavigationLink("👥 Team Mode", destination: TeamSessionLobbyView())
                     .buttonStyle(.bordered)
+                    .accessibilityIdentifier("TeamModeButton")
 
                 Spacer()
             }

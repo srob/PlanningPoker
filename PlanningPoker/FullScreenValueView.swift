@@ -22,16 +22,18 @@ struct FullScreenValueView: View {
 
             VStack {
                 Spacer()
-                AnimatedVerticalText(value: value, animate: animateText)
+                VerticalValueText(value: value.vertical, animate: animateText)
                 Spacer()
                 CountdownRing(remainingTime: remainingTime, remainingTrim: remainingTrim)
                     .padding(.bottom, 40)
             }
+
             .opacity(opacity)
 
             KeyCommandCatcher { key in
                 dismissWithAnimation()
             }
+            .accessibilityIdentifier("FullScreenContainer")
         }
         .contentShape(Rectangle())
         .onTapGesture {

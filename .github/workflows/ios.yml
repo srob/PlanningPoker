@@ -20,5 +20,4 @@ jobs:
         run: |
           xcodebuild test \
             -scheme PlanningPoker \
-            -destination 'platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.4' \
-            -enableCodeCoverage YES
+            -destination 'platform=iOS Simulator,name=iPhone SE (3rd generation),OS=18.4'

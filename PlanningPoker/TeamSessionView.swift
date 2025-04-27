@@ -99,11 +99,20 @@ struct TeamSessionView: View {
             if sessionModel.isRevealed {
                 Text("Votes:")
                     .font(.headline)
+
                 ForEach(sessionModel.votes.sorted(by: { $0.key < $1.key }), id: \.key) { userId, value in
                     Text("\(displayName(for: userId)): \(value)")
                 }
+
+                if sessionModel.isCreator {
+                    Button("🙈 Hide Votes") {
+                        sessionModel.hideVotes()
+                    }
+                    .padding()
+                }
+
             } else {
-                if sessionModel.votes.count >= 2 {
+                if sessionModel.votes.count >= 2 && sessionModel.isCreator {
                     Button("👁 Reveal Votes") {
                         sessionModel.revealVotes()
                     }
@@ -147,9 +156,17 @@ private struct ParticipantView: View {
 
     var body: some View {
         VStack {
-            Circle()
-                .fill(hasVoted ? Color.green : Color.gray.opacity(0.3))
-                .frame(width: 40, height: 40)
+            ZStack {
+                Circle()
+                    .fill(hasVoted ? Color.green : Color.gray.opacity(0.3))
+                    .frame(width: 40, height: 40)
+
+                if hasVoted {
+                    Image(systemName: "checkmark")
+                        .font(.caption2)
+                        .foregroundColor(.white)
+                }
+            }
             Text(name)
                 .font(.caption2)
                 .lineLimit(1)

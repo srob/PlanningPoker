@@ -16,17 +16,22 @@ struct ErrorMessage: Identifiable {
 class SessionModel: ObservableObject {
     @Published var sessionId: String = ""
     @Published var userId: String = UUID().uuidString
-    @Published var userName: String = "" // NEW: entered participant name
+    @Published var userName: String = "" // entered name
     @Published var selectedValue: String? = nil
     @Published var votes: [String: String] = [:] // userId -> value
     @Published var isRevealed: Bool = false
     @Published var participants: [String] = []
-    @Published var participantNames: [String: String] = [:] // NEW: userId -> name
+    @Published var participantNames: [String: String] = [:]
+    @Published var createdBy: String = "" // NEW: creator userId
     @Published var joinErrorMessage: ErrorMessage? = nil
     @Published var hasJoinedSession: Bool = false
 
     private var db = Firestore.firestore()
     private var listener: ListenerRegistration?
+
+    var isCreator: Bool {
+        return userId == createdBy
+    }
 
     func createSession(completion: @escaping (Result<Void, Error>) -> Void) {
         let sessionRef = db.collection("sessions").document()
@@ -116,6 +121,13 @@ class SessionModel: ObservableObject {
             .updateData(["revealed": true])
     }
 
+    func hideVotes() {
+        guard !sessionId.isEmpty else { return }
+        db.collection("sessions")
+            .document(sessionId)
+            .updateData(["revealed": false])
+    }
+
     var allParticipantIds: [String] {
         return participants.isEmpty ? Array(Set(votes.keys + [userId])) : participants
     }
@@ -138,6 +150,7 @@ class SessionModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.votes = data["votes"] as? [String: String] ?? [:]
                         self.isRevealed = data["revealed"] as? Bool ?? false
+                        self.createdBy = data["createdBy"] as? String ?? ""
                         let participantsDict = data["participants"] as? [String: String] ?? [:]
                         self.participantNames = participantsDict
                         self.participants = Array(participantsDict.keys)

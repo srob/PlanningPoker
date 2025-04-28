@@ -22,7 +22,7 @@ struct FullScreenValueView: View {
 
             VStack {
                 Spacer()
-                VerticalValueText(value: value.vertical, animate: animateText)
+                VerticalValueText(value: value, animate: animateText)
                 Spacer()
                 CountdownRing(remainingTime: remainingTime, remainingTrim: remainingTrim)
                     .padding(.bottom, 40)

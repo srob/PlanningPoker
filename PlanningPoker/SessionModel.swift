@@ -1,10 +1,3 @@
-//
-//  SessionModel.swift
-//  PlanningPoker
-//
-//  Created by Simon Roberts on 24/04/2025.
-//
-
 import Foundation
 import FirebaseFirestore
 
@@ -16,13 +9,13 @@ struct ErrorMessage: Identifiable {
 class SessionModel: ObservableObject {
     @Published var sessionId: String = ""
     @Published var userId: String = UUID().uuidString
-    @Published var userName: String = "" // entered name
+    @Published var userName: String = ""
     @Published var selectedValue: String? = nil
-    @Published var votes: [String: String] = [:] // userId -> value
+    @Published var votes: [String: String] = [:]
     @Published var isRevealed: Bool = false
     @Published var participants: [String] = []
     @Published var participantNames: [String: String] = [:]
-    @Published var createdBy: String = "" // NEW: creator userId
+    @Published var createdBy: String = ""
     @Published var joinErrorMessage: ErrorMessage? = nil
     @Published var hasJoinedSession: Bool = false
 
@@ -33,15 +26,21 @@ class SessionModel: ObservableObject {
         return userId == createdBy
     }
 
+    func generateSessionId(length: Int = 6) -> String {
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return String((0..<length).compactMap { _ in characters.randomElement() })
+    }
+
     func createSession(completion: @escaping (Result<Void, Error>) -> Void) {
-        let sessionRef = db.collection("sessions").document()
-        self.sessionId = sessionRef.documentID
+        self.sessionId = generateSessionId()
+        let sessionRef = db.collection("sessions").document(sessionId)
 
         let data: [String: Any] = [
             "createdBy": userId,
             "revealed": false,
             "votes": [:],
-            "participants": [userId: userName]
+            "participants": [userId: userName],
+            "createdAt": FieldValue.serverTimestamp()
         ]
 
         sessionRef.setData(data) { error in
@@ -58,7 +57,7 @@ class SessionModel: ObservableObject {
     }
 
     func joinSession(sessionId: String) {
-        let trimmedSessionId = sessionId.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedSessionId = sessionId.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
         guard !trimmedSessionId.isEmpty else {
             DispatchQueue.main.async {
